@@ -1,0 +1,25 @@
+info.onCountdownEnd(function () {
+    music.stopAllSounds()
+    pause(2000)
+    game.setGameOverScoringType(game.ScoringType.HighScore)
+    game.setGameOverMessage(false, "Too late to catch!")
+    game.gameOver(false)
+})
+info.onScore(100, function () {
+    music.stopAllSounds()
+    pause(2000)
+    game.setGameOverMessage(true, "Game over!")
+    game.gameOver(true)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
+    info.changeScoreBy(1)
+    pizza.setPosition(randint(0, scene.screenWidth()), randint(0, scene.screenHeight()))
+    info.changeCountdownBy(2)
+})
+let pizza: Sprite = null
+scene.setBackgroundColor(13)
+let mySprite = sprites.create(assets.image`Normal`, SpriteKind.Player)
+controller.moveSprite(mySprite)
+pizza = sprites.create(assets.image`Pizza`, SpriteKind.Food)
+music.play(music.createSong(assets.song`Time to catch`), music.PlaybackMode.LoopingInBackground)
+info.startCountdown(10)
